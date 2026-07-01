@@ -4,7 +4,8 @@ import { Flag } from "@/components/ui/Flag";
 import { kickoffLabel } from "@/lib/utils";
 
 function Chip({ id }: { id: string }) {
-  const m = MATCHES.find((x) => x.id === id)!;
+  const m = MATCHES.find((x) => x.id === id);
+  if (!m) return null;
   const h = team(m.homeId);
   const a = team(m.awayId);
   const live = m.status === "live" || m.status === "halftime";
@@ -42,10 +43,11 @@ function Chip({ id }: { id: string }) {
 }
 
 export function LiveTicker() {
-  // Order: live → upcoming today → finished. Duplicated for a seamless loop.
+  // Order: upcoming → finished. Duplicated for a seamless loop.
   const order = [
-    "qf2", "qf1", "qf4", "qf3", "r16a", "r16b", "r16c", "r16d",
-    "r16e", "r16f", "r16g", "r16h",
+    "r32-eng-cod", "r32-bel-sen", "r32-usa-bih", "r32-esp-aut",
+    "r16-can-mar", "r16-par-fra", "r16-bra-nor",
+    "r32-can-rsa", "r32-mex-ecu", "r32-bra-jpn", "r32-ger-par", "r32-fra-swe",
   ];
   const items = [...order, ...order];
 
