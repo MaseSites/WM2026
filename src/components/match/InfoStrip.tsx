@@ -42,7 +42,7 @@ export function InfoStrip({ m }: { m: Match }) {
       <Item icon="Trophy" label="City" value={m.city} />
       <Item icon="UserRound" label="Referee">
         <span className="flex items-center gap-1.5">
-          <Flag code={m.refereeCountry} size={15} />
+          {m.refereeCountry && <Flag code={m.refereeCountry} size={15} />}
           {m.referee}
         </span>
       </Item>

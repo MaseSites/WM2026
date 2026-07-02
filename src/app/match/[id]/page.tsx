@@ -56,7 +56,23 @@ export default async function MatchPage({
         </div>
       )}
       <div className="grid gap-4 lg:grid-cols-[1.4fr_1fr]">
-        {hasEvents ? <Commentary m={m} /> : (
+        {hasEvents ? (
+          <Commentary m={m} />
+        ) : m.status === "finished" ? (
+          <div className="panel flex flex-col justify-center p-6">
+            <Icon name="CalendarCheck" className="mb-2 h-5 w-5 text-accent" />
+            <h3 className="text-[15px] font-semibold">Full-time</h3>
+            <p className="mt-1 text-[13px] leading-relaxed text-ink-2">
+              {team(m.homeScore >= m.awayScore ? m.homeId : m.awayId).name}
+              {m.homePens != null
+                ? " advance on penalties"
+                : m.homeScore === m.awayScore
+                  ? " and their opponents shared the points"
+                  : " progress to the Round of 16"}
+              . Detailed event data for this tie is limited — final score confirmed.
+            </p>
+          </div>
+        ) : (
           <div className="panel flex flex-col justify-center p-6">
             <Icon name="CalendarDays" className="mb-2 h-5 w-5 text-accent" />
             <h3 className="text-[15px] font-semibold">Match preview</h3>

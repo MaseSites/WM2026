@@ -22,7 +22,7 @@ export default function BracketPage() {
         kicker="Road to the final"
         title="Knockout Bracket"
         icon="Trophy"
-        subtitle="Sixteen became eight. The final is set for MetLife Stadium on 19 July. Tap any tie to open the match centre."
+        subtitle="Forty-eight became thirty-two. The Round of 32 is under way, with the final set for MetLife Stadium on 19 July. Tap any tie to open the match centre."
       />
 
       <Reveal>

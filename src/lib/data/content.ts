@@ -61,11 +61,11 @@ export const TRANSFERS: Transfer[] = [
 ];
 
 export const DISCUSSIONS: Discussion[] = [
-  { id: "d1", title: "Is this the best France transition attack since 2018?", author: "leblanc_10", replies: 342, likes: 1280, minutesAgo: 12, tag: "France", hot: true },
-  { id: "d2", title: "Yamal at 18 — where does he rank all-time at this age?", author: "tiki_taka", replies: 512, likes: 2410, minutesAgo: 25, tag: "Spain", hot: true },
-  { id: "d3", title: "Referee watch: was the QF1 penalty check the right call?", author: "var_room", replies: 198, likes: 640, minutesAgo: 40, tag: "Officiating" },
-  { id: "d4", title: "Bracket predictions: who reaches the MetLife final?", author: "bracketology", replies: 876, likes: 3110, minutesAgo: 58, tag: "Bracket", hot: true },
-  { id: "d5", title: "Unpopular opinion: Portugal are the most complete side left", author: "quinas_fc", replies: 264, likes: 720, minutesAgo: 88, tag: "Portugal" },
+  { id: "d1", title: "Paraguay over Germany — the upset of the tournament?", author: "albirroja", replies: 642, likes: 2280, minutesAgo: 55, tag: "Round of 32", hot: true },
+  { id: "d2", title: "Messi vs Mbappé — who wins the Golden Boot from here?", author: "goat_debate", replies: 812, likes: 3410, minutesAgo: 25, tag: "Golden Boot", hot: true },
+  { id: "d3", title: "How did Morocco break down that Dutch block?", author: "tactics_ma", replies: 298, likes: 940, minutesAgo: 70, tag: "Tactics" },
+  { id: "d4", title: "Brazil vs Norway is the last-16 tie of the round — agree?", author: "bracketology", replies: 476, likes: 1810, minutesAgo: 88, tag: "Round of 16", hot: true },
+  { id: "d5", title: "Can anyone stop Spain? The model has them clear favourites", author: "la_roja_10", replies: 364, likes: 1020, minutesAgo: 120, tag: "Spain" },
 ];
 
 export interface PollOption {
@@ -84,21 +84,21 @@ export const POLLS: Poll[] = [
     id: "poll-winner",
     question: "Who lifts the trophy on July 19?",
     options: [
+      { label: "Spain", teamId: "spain", votes: 5210 },
       { label: "Argentina", teamId: "argentina", votes: 4820 },
-      { label: "France", teamId: "france", votes: 5210 },
-      { label: "Spain", teamId: "spain", votes: 3990 },
+      { label: "France", teamId: "france", votes: 4470 },
       { label: "Brazil", teamId: "brazil", votes: 3560 },
       { label: "England", teamId: "england", votes: 2870 },
     ],
   },
   {
-    id: "poll-motm",
-    question: "QF1 — who's your Player of the Match so far?",
+    id: "poll-shock",
+    question: "Biggest shock of the Round of 32?",
     options: [
-      { label: "Kylian Mbappé", teamId: "france", votes: 3120 },
-      { label: "Ousmane Dembélé", teamId: "france", votes: 1980 },
-      { label: "Vinícius Júnior", teamId: "brazil", votes: 2440 },
-      { label: "Raphinha", teamId: "brazil", votes: 1210 },
+      { label: "Paraguay knock out Germany", teamId: "paraguay", votes: 3120 },
+      { label: "Morocco end the Dutch run", teamId: "morocco", votes: 2440 },
+      { label: "Canada's first knockout win", teamId: "canada", votes: 1980 },
+      { label: "Norway edge Ivory Coast", teamId: "norway", votes: 1210 },
     ],
   },
 ];

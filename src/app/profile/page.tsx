@@ -25,7 +25,7 @@ const STATS = [
 ];
 
 export default function ProfilePage() {
-  const fav = team("italy");
+  const fav = team("argentina");
   const history = RESULTS.slice(0, 6).map((m, i) => {
     const h = team(m.homeId);
     const a = team(m.awayId);
@@ -53,7 +53,7 @@ export default function ProfilePage() {
               <div className="mt-2 flex items-center gap-4 text-[12px] text-ink-3">
                 <span><span className="font-semibold text-ink">312</span> followers</span>
                 <span><span className="font-semibold text-ink">198</span> following</span>
-                <Link href="/team/italy" className="flex items-center gap-1.5 hover:text-ink">
+                <Link href="/team/argentina" className="flex items-center gap-1.5 hover:text-ink">
                   <Flag code={fav.code} size={14} /> Supports {fav.short}
                 </Link>
               </div>
@@ -100,7 +100,7 @@ export default function ProfilePage() {
 
         <div className="space-y-6">
           <Section title="Favourite team" kicker="Following" icon="Shield">
-            <Link href="/team/italy" className="panel panel-hover flex items-center gap-3 p-4">
+            <Link href="/team/argentina" className="panel panel-hover flex items-center gap-3 p-4">
               <Flag code={fav.code} size={44} rounded="rounded-lg" />
               <div className="flex-1">
                 <div className="text-[14px] font-semibold">{fav.name}</div>
