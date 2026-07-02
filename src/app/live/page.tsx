@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { LIVE_MATCHES, UPCOMING, RESULTS, team, match } from "@/lib/data";
+import { team } from "@/lib/data";
+import { getLive, getUpcoming, getResults } from "@/lib/live";
 import { Scoreboard } from "@/components/match/Scoreboard";
 import { Momentum } from "@/components/charts/Momentum";
 import { PageHeader } from "@/components/ui/PageHeader";
@@ -14,6 +15,8 @@ export const metadata: Metadata = {
   title: "Live Center",
   description: "Real-time World Cup 2026 scores, momentum and events.",
 };
+
+export const revalidate = 60;
 
 function LatestEvents({ m }: { m: Match }) {
   const events = m.events
@@ -72,9 +75,10 @@ function LiveEntry({ m }: { m: Match }) {
   );
 }
 
-export default function LivePage() {
-  const next = UPCOMING.slice(0, 2);
-  const recent = RESULTS.slice(0, 3);
+export default async function LivePage() {
+  const [liveMatches, upcoming, results] = await Promise.all([getLive(), getUpcoming(), getResults()]);
+  const next = upcoming.slice(0, 2);
+  const recent = results.slice(0, 3);
 
   return (
     <div className="space-y-8">
@@ -85,11 +89,11 @@ export default function LivePage() {
         subtitle="Every goal, card and momentum swing as it happens — powered by our live model."
       >
         <Pill variant="live" dot>
-          {LIVE_MATCHES.length} live now
+          {liveMatches.length} live now
         </Pill>
       </PageHeader>
 
-      {LIVE_MATCHES.length === 0 ? (
+      {liveMatches.length === 0 ? (
         <div className="panel flex flex-col items-center justify-center py-20 text-center">
           <Icon name="Radio" className="mb-3 h-8 w-8 text-ink-3" />
           <div className="text-[15px] font-semibold">No matches live right now</div>
@@ -97,7 +101,7 @@ export default function LivePage() {
         </div>
       ) : (
         <div className="space-y-10">
-          {LIVE_MATCHES.map((m) => (
+          {liveMatches.map((m) => (
             <LiveEntry key={m.id} m={m} />
           ))}
         </div>

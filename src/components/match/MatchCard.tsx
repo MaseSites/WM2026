@@ -77,7 +77,7 @@ export function MatchCard({ m, className }: { m: Match; className?: string }) {
         {live ? (
           <span className="flex items-center gap-1.5 text-[11px] font-bold text-live">
             <span className="live-dot h-1.5 w-1.5 rounded-full bg-live" />
-            {m.status === "halftime" ? "HT" : `${m.minute}′`}
+            {m.status === "halftime" ? "HT" : m.minute ? `${m.minute}′` : "LIVE"}
           </span>
         ) : done ? (
           <span className="text-[11px] font-semibold text-ink-3">FT</span>

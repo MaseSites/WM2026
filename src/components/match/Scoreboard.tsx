@@ -99,7 +99,7 @@ export function Scoreboard({ m }: { m: Match }) {
                 {live && (
                   <div className="mt-2 flex items-center gap-1.5 text-[13px] font-bold text-live">
                     <span className="live-dot h-1.5 w-1.5 rounded-full bg-live" />
-                    {m.minute}′
+                    {m.minute ? `${m.minute}′` : "LIVE"}
                   </div>
                 )}
               </>

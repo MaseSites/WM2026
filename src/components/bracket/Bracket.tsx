@@ -1,12 +1,7 @@
-import { BRACKET_R32, BRACKET_R16, match } from "@/lib/data";
+import { BRACKET_R32, BRACKET_R16 } from "@/lib/data";
+import { getMatches } from "@/lib/live";
 import { BracketMatch } from "./BracketMatch";
 import type { BracketNode } from "@/lib/types";
-
-const isLive = (n: BracketNode) => {
-  if (!n.matchId) return false;
-  const m = match(n.matchId);
-  return m?.status === "live" || m?.status === "halftime";
-};
 
 function empty(id: string): BracketNode {
   return { id, round: "QF" };
@@ -15,10 +10,12 @@ function empty(id: string): BracketNode {
 function Column({
   title,
   nodes,
+  liveIds,
   placeholder,
 }: {
   title: string;
   nodes: BracketNode[];
+  liveIds: Set<string>;
   placeholder?: string;
 }) {
   return (
@@ -33,7 +30,7 @@ function Column({
             node={n}
             homePlaceholder={placeholder ?? "TBD"}
             awayPlaceholder={placeholder ?? "TBD"}
-            live={isLive(n)}
+            live={!!n.matchId && liveIds.has(n.matchId)}
           />
         ))}
       </div>
@@ -41,7 +38,11 @@ function Column({
   );
 }
 
-export function Bracket() {
+export async function Bracket() {
+  const matches = await getMatches();
+  const liveIds = new Set(
+    matches.filter((m) => m.status === "live" || m.status === "halftime").map((m) => m.id),
+  );
   const qf = Array.from({ length: 4 }, (_, i) => empty(`qf-${i}`));
   const sf = Array.from({ length: 2 }, (_, i) => empty(`sf-${i}`));
   const f = [empty("final")];
@@ -52,11 +53,11 @@ export function Bracket() {
         className="grid min-w-[1040px] gap-4"
         style={{ gridTemplateColumns: "1.1fr 1fr 1fr 1fr 1.1fr", minHeight: 980 }}
       >
-        <Column title="Round of 32" nodes={BRACKET_R32} />
-        <Column title="Round of 16" nodes={BRACKET_R16} placeholder="R32 winner" />
-        <Column title="Quarter-finals" nodes={qf} placeholder="R16 winner" />
-        <Column title="Semi-finals" nodes={sf} placeholder="QF winner" />
-        <Column title="Final" nodes={f} placeholder="SF winner" />
+        <Column title="Round of 32" nodes={BRACKET_R32} liveIds={liveIds} />
+        <Column title="Round of 16" nodes={BRACKET_R16} liveIds={liveIds} placeholder="R32 winner" />
+        <Column title="Quarter-finals" nodes={qf} liveIds={liveIds} placeholder="R16 winner" />
+        <Column title="Semi-finals" nodes={sf} liveIds={liveIds} placeholder="QF winner" />
+        <Column title="Final" nodes={f} liveIds={liveIds} placeholder="SF winner" />
       </div>
     </div>
   );

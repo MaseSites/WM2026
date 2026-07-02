@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { LIVE_MATCHES, UPCOMING, NEXT_MATCH, TOURNAMENT, team } from "@/lib/data";
+import { TOURNAMENT, team } from "@/lib/data";
+import { getLive, getUpcoming, getNextMatch } from "@/lib/live";
 import { Flag } from "@/components/ui/Flag";
 import { Pill } from "@/components/ui/Pill";
 import { Icon } from "@/components/ui/Icon";
@@ -17,7 +18,7 @@ function HeroLive({ m }: { m: Match }) {
     >
       <span className="flex shrink-0 items-center gap-1 rounded-md bg-live/12 px-1.5 py-1 text-[10px] font-bold text-live">
         <span className="live-dot h-1.5 w-1.5 rounded-full bg-live" />
-        {m.minute}′
+        {m.minute ? `${m.minute}′` : "LIVE"}
       </span>
       <div className="min-w-0 flex-1 space-y-1.5">
         <div className="flex items-center justify-between gap-2">
@@ -54,13 +55,15 @@ function UpcomingRow({ m }: { m: Match }) {
   );
 }
 
-export function Hero() {
-  const live = LIVE_MATCHES.length;
-  const next = NEXT_MATCH;
-  const nh = team(next.homeId);
-  const na = team(next.awayId);
-  const { day, time } = kickoffLabel(next.kickoff);
-  const upNext = UPCOMING.slice(0, 3);
+export async function Hero() {
+  const liveMatches = await getLive();
+  const upcoming = await getUpcoming();
+  const next = await getNextMatch();
+  const live = liveMatches.length;
+  const nh = next ? team(next.homeId) : undefined;
+  const na = next ? team(next.awayId) : undefined;
+  const nextLabel = next ? kickoffLabel(next.kickoff) : undefined;
+  const upNext = upcoming.slice(0, 3);
 
   return (
     <section className="rise relative overflow-hidden rounded-2xl border border-line panel">
@@ -96,7 +99,7 @@ export function Hero() {
 
           <div className="mt-6 grid max-w-lg grid-cols-2 gap-x-8 gap-y-4 sm:grid-cols-4">
             {[
-              { v: "25", l: "Teams left" },
+              { v: "22", l: "Teams left" },
               { v: TOURNAMENT.goals, l: "Goals" },
               { v: TOURNAMENT.avgGoals, l: "Goals / match" },
               { v: "5.13M", l: "Attendance" },
@@ -126,7 +129,7 @@ export function Hero() {
                 <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-3">Live now</span>
                 <Link href="/live" className="text-[12px] font-medium text-accent">Open →</Link>
               </div>
-              {LIVE_MATCHES.map((m) => <HeroLive key={m.id} m={m} />)}
+              {liveMatches.map((m) => <HeroLive key={m.id} m={m} />)}
             </>
           ) : (
             <div className="flex items-center gap-3 rounded-xl border border-line bg-white/[0.02] p-4">
@@ -135,31 +138,37 @@ export function Hero() {
               </span>
               <div>
                 <div className="text-[13.5px] font-semibold">No matches live right now</div>
-                <div className="text-[11.5px] text-ink-3">Next kick-off {day} at {time}</div>
+                <div className="text-[11.5px] text-ink-3">
+                  {nextLabel ? `Next kick-off ${nextLabel.day} at ${nextLabel.time}` : "Schedule updating"}
+                </div>
               </div>
             </div>
           )}
 
-          <div className="rounded-xl border border-line bg-white/[0.02] p-3.5">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-3">Next up</span>
-              <span className="text-[11px] text-ink-3">{day} · {time}</span>
-            </div>
-            <div className="mt-2.5 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Flag code={nh.code} size={22} /><span className="text-[13.5px] font-semibold">{nh.short}</span>
+          {next && nh && na && nextLabel && (
+            <div className="rounded-xl border border-line bg-white/[0.02] p-3.5">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-3">Next up</span>
+                <span className="text-[11px] text-ink-3">{nextLabel.day} · {nextLabel.time}</span>
               </div>
-              <span className="text-[11px] font-medium text-ink-3">vs</span>
-              <div className="flex items-center gap-2">
-                <span className="text-[13.5px] font-semibold">{na.short}</span><Flag code={na.code} size={22} />
+              <div className="mt-2.5 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Flag code={nh.code} size={22} /><span className="text-[13.5px] font-semibold">{nh.short}</span>
+                </div>
+                <span className="text-[11px] font-medium text-ink-3">vs</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-[13.5px] font-semibold">{na.short}</span><Flag code={na.code} size={22} />
+                </div>
               </div>
+              <div className="mt-3"><Countdown iso={next.kickoff} compact /></div>
             </div>
-            <div className="mt-3"><Countdown iso={next.kickoff} compact /></div>
-          </div>
+          )}
 
-          <div className="rounded-xl border border-line bg-white/[0.02] p-1.5">
-            {upNext.map((m) => <UpcomingRow key={m.id} m={m} />)}
-          </div>
+          {upNext.length > 0 && (
+            <div className="rounded-xl border border-line bg-white/[0.02] p-1.5">
+              {upNext.map((m) => <UpcomingRow key={m.id} m={m} />)}
+            </div>
+          )}
         </div>
       </div>
     </section>

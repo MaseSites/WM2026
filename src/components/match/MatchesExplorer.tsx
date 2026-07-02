@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MATCHES } from "@/lib/data";
 import { MatchCard } from "./MatchCard";
 import { cn } from "@/lib/utils";
+import type { Match } from "@/lib/types";
 
 const FILTERS = [
   { id: "all", label: "All" },
@@ -15,10 +16,10 @@ const FILTERS = [
 
 const STAGE_ORDER = ["Quarter-final", "Round of 16", "Round of 32", "Group"];
 
-export function MatchesExplorer() {
+export function MatchesExplorer({ allMatches = MATCHES }: { allMatches?: Match[] }) {
   const [filter, setFilter] = useState<(typeof FILTERS)[number]["id"]>("all");
 
-  const matches = MATCHES.filter((m) => {
+  const matches = allMatches.filter((m) => {
     if (filter === "all") return true;
     if (filter === "live") return m.status === "live" || m.status === "halftime";
     return m.status === filter;
@@ -33,10 +34,10 @@ export function MatchesExplorer() {
           const on = f.id === filter;
           const count =
             f.id === "all"
-              ? MATCHES.length
+              ? allMatches.length
               : f.id === "live"
-                ? MATCHES.filter((m) => m.status === "live" || m.status === "halftime").length
-                : MATCHES.filter((m) => m.status === f.id).length;
+                ? allMatches.filter((m) => m.status === "live" || m.status === "halftime").length
+                : allMatches.filter((m) => m.status === f.id).length;
           return (
             <button
               key={f.id}

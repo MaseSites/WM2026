@@ -10,11 +10,15 @@ import { FanPoll } from "@/components/home/FanPoll";
 import { TransfersCard, DiscussionsCard } from "@/components/home/SocialRail";
 import { Section } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
-import { RESULTS, UPCOMING, GROUP_TEAMS, POLLS } from "@/lib/data";
+import { GROUP_TEAMS, POLLS } from "@/lib/data";
+import { getResults, getUpcoming } from "@/lib/live";
 
-export default function HomePage() {
+export const revalidate = 60;
+
+export default async function HomePage() {
   // A live-relevant mix: the latest results next to the next kick-offs.
-  const knockout = [...RESULTS.slice(0, 2), ...UPCOMING.slice(0, 2)];
+  const [results, upcoming] = await Promise.all([getResults(), getUpcoming()]);
+  const knockout = [...results.slice(0, 2), ...upcoming.slice(0, 2)];
 
   return (
     <div className="space-y-9">

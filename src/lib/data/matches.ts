@@ -1,9 +1,9 @@
 import type { Match, MatchEvent, MatchPrediction, BracketNode } from "../types";
 
-// Real tournament clock: early on 1 July 2026. The group stage is complete and
-// the Round of 32 is under way (28 June – 3 July). At this hour NO match is live
-// — 7 ties are finished, 3 kick off later today, the rest across 2–3 July.
-export const NOW = new Date("2026-07-01T13:00:00Z");
+// Real tournament clock: overnight into 2 July 2026. The group stage is complete
+// and the Round of 32 is under way (28 June – 3 July). At this hour NO match is
+// live — the 1 July ties are done, the 2–3 July fixtures are still to come.
+export const NOW = new Date("2026-07-02T04:00:00Z");
 
 function ev(minute: number, type: MatchEvent["type"], teamId?: string, playerName?: string): MatchEvent {
   return { minute, type, teamId, playerName };
@@ -41,6 +41,15 @@ const FINISHED: Fin[] = [
   { id: "r32-fra-swe", home: "france", away: "sweden", hs: 3, as: 0,
     kickoff: "2026-06-30T22:00:00Z", venue: "Gillette Stadium", city: "Boston", country: "us", att: 65110,
     goals: [ev(0, "kickoff"), ev(19, "goal", "france", "Kylian Mbappé"), ev(67, "goal", "france", "Kylian Mbappé"), ev(90, "fulltime")] },
+  { id: "r32-eng-cod", home: "england", away: "dr-congo", hs: 2, as: 1,
+    kickoff: "2026-07-01T18:00:00Z", venue: "Mercedes-Benz Stadium", city: "Atlanta", country: "us", att: 70210,
+    goals: [ev(0, "kickoff"), ev(7, "goal", "dr-congo", "DR Congo"), ev(58, "goal", "england", "Harry Kane"), ev(86, "goal", "england", "Harry Kane"), ev(90, "fulltime")] },
+  { id: "r32-bel-sen", home: "belgium", away: "senegal", hs: 3, as: 2,
+    kickoff: "2026-07-01T21:00:00Z", venue: "Lincoln Financial Field", city: "Philadelphia", country: "us", att: 66540,
+    goals: [ev(0, "kickoff"), ev(120, "fulltime")] },
+  { id: "r32-usa-bih", home: "usa", away: "bosnia", hs: 2, as: 0,
+    kickoff: "2026-07-02T00:00:00Z", venue: "SoFi Stadium", city: "Los Angeles", country: "us", att: 68320,
+    goals: [ev(0, "kickoff"), ev(44, "goal", "usa", "Folarin Balogun"), ev(64, "red", "usa", "Folarin Balogun"), ev(85, "goal", "usa", "Malik Tillman"), ev(90, "fulltime")] },
 ];
 
 type Upc = {
@@ -62,30 +71,6 @@ function pred(
 
 const UPCOMING_DEFS: Upc[] = [
   // ── Round of 32 · remaining ─────────────────────────────────────────────
-  { id: "r32-eng-cod", home: "england", away: "dr-congo", kickoff: "2026-07-01T18:00:00Z",
-    venue: "Mercedes-Benz Stadium", city: "Atlanta", country: "us", stage: "Round of 32", round: "R32",
-    wp: [78, 15, 7],
-    pred: pred(78, 15, 7, "2–0", "Harry Kane", "England 71%", "Jude Bellingham", 74, [
-      "England were the tournament's most controlled group winners — three clean sheets and a division-best 61% average possession.",
-      "DR Congo's threat is transition speed; if England's rest-defence holds, the model sees a comfortable passage.",
-      "Kane converts penalties at 92% — any set-piece contact in the box swings this further toward the Three Lions.",
-    ]) },
-  { id: "r32-bel-sen", home: "belgium", away: "senegal", kickoff: "2026-07-01T21:00:00Z",
-    venue: "Lincoln Financial Field", city: "Philadelphia", country: "us", stage: "Round of 32", round: "R32",
-    wp: [42, 27, 31],
-    pred: pred(42, 27, 31, "1–1", "Romelu Lukaku", "Belgium 52%", "Nicolas Jackson", 58, [
-      "A genuine coin-flip: Senegal's athletic midfield can smother Belgium's build-up, exactly where De Bruyne needs time.",
-      "Belgium's edge is finishing quality; Senegal's is the press. Expect a low-event tie decided in the margins.",
-      "History is level — the model gives the draw a healthy 27% and rates penalties a real possibility.",
-    ]) },
-  { id: "r32-usa-bih", home: "usa", away: "bosnia", kickoff: "2026-07-02T00:00:00Z",
-    venue: "SoFi Stadium", city: "Los Angeles", country: "us", stage: "Round of 32", round: "R32",
-    wp: [55, 24, 21],
-    pred: pred(55, 24, 21, "2–1", "Christian Pulisic", "USA 58%", "Christian Pulisic", 62, [
-      "Home advantage is real: the USMNT have won all three group games in front of record crowds.",
-      "Bosnia will sit deep and counter through Džeko's hold-up play — the USA's high line is the risk.",
-      "Pulisic on the left against a converted full-back is the mismatch the model keeps flagging.",
-    ]) },
   { id: "r32-esp-aut", home: "spain", away: "austria", kickoff: "2026-07-02T19:00:00Z",
     venue: "AT&T Stadium", city: "Dallas", country: "us", stage: "Round of 32", round: "R32",
     wp: [72, 19, 9],
@@ -144,6 +129,14 @@ const UPCOMING_DEFS: Upc[] = [
       "A blockbuster: Brazil's front line against Haaland's Norway, who dumped out Ivory Coast.",
       "Vinícius and Raphinha give Brazil the edge in sustained pressure, but Haaland only needs one chance.",
       "The model favours Brazil, yet flags Norway's set-piece and transition threat as the great equaliser.",
+    ]) },
+  { id: "r16-mex-x", home: "mexico", away: "england", kickoff: "2026-07-05T00:00:00Z",
+    venue: "Estadio Azteca", city: "Mexico City", country: "mx", stage: "Round of 16", round: "R16",
+    wp: [32, 26, 42],
+    pred: pred(32, 26, 42, "1–2", "Harry Kane", "England 55%", "Harry Kane", 60, [
+      "England edged past DR Congo thanks to a Harry Kane brace and now face the co-hosts at a heaving Azteca.",
+      "Altitude and a partisan crowd are Mexico's great levellers — England must manage the tempo early.",
+      "The model leans England on quality, but rates Mexico's home edge as the widest intangible left in the draw.",
     ]) },
 ];
 
@@ -207,9 +200,9 @@ export const BRACKET_R32: BracketNode[] = [
   node("n32-2", "R16", "r32-ned-mar", "netherlands", "morocco", 1, 1, 2, 3),
   node("n32-3", "R16", "r32-ger-par", "germany", "paraguay", 1, 1, 3, 4),
   node("n32-4", "R16", "r32-fra-swe", "france", "sweden", 3, 0),
-  node("n32-5", "R16", "r32-eng-cod", "england", "dr-congo"),
-  node("n32-6", "R16", "r32-bel-sen", "belgium", "senegal"),
-  node("n32-7", "R16", "r32-usa-bih", "usa", "bosnia"),
+  node("n32-5", "R16", "r32-eng-cod", "england", "dr-congo", 2, 1),
+  node("n32-6", "R16", "r32-bel-sen", "belgium", "senegal", 3, 2),
+  node("n32-7", "R16", "r32-usa-bih", "usa", "bosnia", 2, 0),
   node("n32-8", "R16", "r32-esp-aut", "spain", "austria"),
   node("n32-9", "R16", "r32-bra-jpn", "brazil", "japan", 2, 1),
   node("n32-10", "R16", "r32-civ-nor", "ivory-coast", "norway", 1, 2),
@@ -227,7 +220,7 @@ export const BRACKET_R16: BracketNode[] = [
   node("n16-3", "QF", undefined),
   node("n16-4", "QF", undefined),
   node("n16-5", "QF", "r16-bra-nor", "brazil", "norway"),
-  node("n16-6", "QF", "r16-mex-x", "mexico"),
+  node("n16-6", "QF", "r16-mex-x", "mexico", "england"),
   node("n16-7", "QF", undefined),
   node("n16-8", "QF", undefined),
 ];

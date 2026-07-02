@@ -19,7 +19,18 @@ npm run build    # optimized production build (152 static pages)
 npm run start    # serve the production build
 ```
 
-No environment variables are required for the demo — the app ships with a fully-typed, believable dataset of the quarter-final stage (see `src/lib/data`). Flags are served from `flagcdn.com`; fonts from Google Fonts.
+No environment variables are required — the app ships with a real, hand-verified snapshot of the tournament (see `src/lib/data`). Flags are served from `flagcdn.com`; fonts from Google Fonts.
+
+### Live data (optional, auto-updating)
+
+By default the site renders from the bundled snapshot. To make results update **automatically**, add a free [football-data.org](https://www.football-data.org/client/register) key:
+
+```bash
+cp .env.example .env.local
+# then set FOOTBALL_DATA_API_KEY=your_key
+```
+
+With a key set, `src/lib/live` fetches the real World Cup competition, merges live scores/status over the snapshot (keeping our curated venues, predictions, etc.), and every match-facing page revalidates on a **60-second ISR window**. A webhook/cron can force an instant refresh via `POST /api/revalidate?secret=…`. With no key, everything falls back to the snapshot — the app renders identically and never breaks.
 
 ---
 

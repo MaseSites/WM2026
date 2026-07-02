@@ -12,6 +12,8 @@ export const metadata: Metadata = {
   description: "The full FIFA World Cup 2026 knockout bracket — road to the MetLife final.",
 };
 
+export const revalidate = 60;
+
 export default function BracketPage() {
   const finalists = TITLE_CONTENDERS.slice(0, 4);
   const max = finalists[0].winProbability;

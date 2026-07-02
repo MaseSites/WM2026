@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { MATCHES, match, team } from "@/lib/data";
+import { MATCHES, team } from "@/lib/data";
+import { getMatchById } from "@/lib/live";
 import { Scoreboard } from "@/components/match/Scoreboard";
 import { StatsPanel } from "@/components/match/StatsPanel";
 import { Timeline } from "@/components/match/Timeline";
@@ -15,6 +16,9 @@ import { Momentum } from "@/components/charts/Momentum";
 import { Tabs, type TabDef } from "@/components/ui/Tabs";
 import { Icon } from "@/components/ui/Icon";
 
+export const revalidate = 60;
+export const dynamicParams = true;
+
 export function generateStaticParams() {
   return MATCHES.map((m) => ({ id: m.id }));
 }
@@ -25,7 +29,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const m = match(id);
+  const m = await getMatchById(id);
   if (!m) return { title: "Match" };
   return { title: `${team(m.homeId).name} vs ${team(m.awayId).name}` };
 }
@@ -36,7 +40,7 @@ export default async function MatchPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const m = match(id);
+  const m = await getMatchById(id);
   if (!m) notFound();
 
   const hasEvents = m.events.filter((e) => !["kickoff", "halftime", "fulltime"].includes(e.type)).length > 0;

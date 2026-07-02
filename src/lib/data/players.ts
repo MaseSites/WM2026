@@ -87,7 +87,7 @@ export const PLAYERS: Player[] = [
   mk("beraldo","Lucas Beraldo","brazil",14,"DF","Centre-back",22,185,"Left","PSG","fr",30,7.0,0,0,240,[88,0.3,0.5,0.6,2.3,6.4],["Left-footed build-up","Recovery"],["Aerial power"]),
 
   // ── Golden Boot & marquee stars (other nations) ─────────────────────────
-  mk("kane","Harry Kane","england",9,"FW","Striker",32,188,"Right","Bayern Munich","de",90,8.0,4,3,540,[84,3.6,2.4,1.3,0.9,5.8],["Complete forward","Set-pieces","Link play"],["Foot speed"]),
+  mk("kane","Harry Kane","england",9,"FW","Striker",32,188,"Right","Bayern Munich","de",90,8.1,6,3,540,[84,3.6,2.4,1.3,0.9,5.8],["Complete forward","Set-pieces","Link play"],["Foot speed"]),
   mk("bellingham","Jude Bellingham","england",10,"MF","Attacking midfield",23,186,"Right","Real Madrid","es",180,8.2,3,4,540,[88,2.4,2.9,2.8,2.6,6.6],["Box arrivals","Duels","Leadership"],["Rhythm dips"]),
   mk("saka","Bukayo Saka","england",7,"FW","Right winger",24,178,"Left","Arsenal","gb-eng",140,7.9,3,4,540,[86,2.8,3.0,3.7,1.5,5.1],["Cutting inside","End product"],["Left foot reliance"]),
   mk("foden","Phil Foden","england",11,"FW","Winger",26,171,"Left","Manchester City","gb-eng",120,7.7,2,3,500,[89,2.6,2.8,3.1,1.4,4.8],["Tight control","Both feet"],["Physical duels"]),
