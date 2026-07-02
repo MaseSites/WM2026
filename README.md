@@ -23,14 +23,17 @@ No environment variables are required — the app ships with a real, hand-verifi
 
 ### Live data (optional, auto-updating)
 
-By default the site renders from the bundled snapshot. To make results update **automatically**, add a free [football-data.org](https://www.football-data.org/client/register) key:
+By default the site renders from the bundled snapshot. To make results update **automatically**, add an [API-Football](https://dashboard.api-football.com/) key:
 
 ```bash
 cp .env.example .env.local
-# then set FOOTBALL_DATA_API_KEY=your_key
+# API_FOOTBALL_KEY=your_key
+# API_FOOTBALL_SEASON=2026   (World Cup league = 1)
 ```
 
-With a key set, `src/lib/live` fetches the real World Cup competition, merges live scores/status over the snapshot (keeping our curated venues, predictions, etc.), and every match-facing page revalidates on a **60-second ISR window**. A webhook/cron can force an instant refresh via `POST /api/revalidate?secret=…`. With no key, everything falls back to the snapshot — the app renders identically and never breaks.
+With a key set, `src/lib/live` fetches the real World Cup fixtures, maps them to our domain model (team names, rounds, statuses, scores, penalties, live minute) and merges live scores/status over the snapshot — keeping our curated venues, predictions, etc. Every match-facing page revalidates on a **60-second ISR window**, and a webhook/cron can force an instant refresh via `POST /api/revalidate?secret=…`. With no key (or an unavailable season) everything falls back to the snapshot — the app renders identically and never breaks.
+
+> **Heads up on plans:** the API-Football *Free* plan only exposes seasons **2022–2024**, so live **2026** data requires a paid plan. The adapter has been verified end-to-end against real API-Football data (WC 2022); point `API_FOOTBALL_SEASON` at a season your plan allows to see it live.
 
 ---
 
