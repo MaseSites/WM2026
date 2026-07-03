@@ -64,8 +64,12 @@ export async function fetchLiveMatches(): Promise<Match[] | null> {
   const key = process.env.FOOTBALL_DATA_API_KEY;
   if (!key) return null;
 
+  // Optionally pin a season (starting year), e.g. FOOTBALL_DATA_SEASON=2026.
+  const season = process.env.FOOTBALL_DATA_SEASON;
+  const url = season ? `${ENDPOINT}?season=${season}` : ENDPOINT;
+
   try {
-    const res = await fetch(ENDPOINT, {
+    const res = await fetch(url, {
       headers: { "X-Auth-Token": key },
       next: { revalidate: REVALIDATE_SECONDS, tags: ["wc-matches"] },
     });
